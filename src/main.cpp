@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2013 The Bitcoin developers
 // Copyright (c) 2013 The Sifcoin developers
-// Copyright (c) 2013 The Securecoin developers
+// Copyright (c) 2014 The Cash Locker developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -68,7 +68,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "Securecoin Signed Message:\n";
+const string strMessageMagic = "Cash Locker Signed Message:\n";
 
 double dHashesPerSec = 0.0;
 int64 nHPSTimerStart = 0;
@@ -2793,7 +2793,7 @@ bool InitBlockIndex() {
     if (!fReindex) {
 
         // Genesis block
-        const char* pszTimestamp = "August 27, 2013 - U.N. probes alleged gas attack; U.S. warns Damascus";
+        const char* pszTimestamp = "February 03, 2014 - Seahawks crush Broncos 43-8 to win first Super Bowl Title";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2811,7 +2811,7 @@ bool InitBlockIndex() {
 		
         if (fTestNet)
         {
-            block.nTime    = 1377639352;
+            block.nTime    = 1391480028;
             block.nNonce   = 5845122;
         }
 
@@ -4546,7 +4546,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         return false;
 
     //// debug print
-    printf("SecurecoinMiner:\n");
+    printf("CashlockerMiner:\n");
     printf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
     pblock->print();
     printf("generated %s\n", FormatMoney(pblock->vtx[0].vout[0].nValue).c_str());
@@ -4555,7 +4555,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != hashBestChain)
-            return error("SecurecoinMiner : generated block is stale");
+            return error("CashlockerMiner : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
@@ -4569,7 +4569,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         // Process this block the same as if we had received it from another node
         CValidationState state;
         if (!ProcessBlock(state, NULL, pblock))
-            return error("SecurecoinMiner : ProcessBlock, block not accepted");
+            return error("CashlockerMiner : ProcessBlock, block not accepted");
     }
 
     return true;
@@ -4577,9 +4577,9 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 
 void static BitcoinMiner(CWallet *pwallet)
 {
-    printf("SecurecoinMiner started\n");
+    printf("CashlockerMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("securecoin-miner");
+    RenameThread("cashlocker-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
@@ -4603,7 +4603,7 @@ void static BitcoinMiner(CWallet *pwallet)
         CBlock *pblock = &pblocktemplate->block;
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        printf("Running SecurecoinMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
+        printf("Running CashlockerMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
                ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -4707,7 +4707,7 @@ void static BitcoinMiner(CWallet *pwallet)
     } }
     catch (boost::thread_interrupted)
     {
-        printf("SecurecoinMiner terminated\n");
+        printf("CashlockerMiner terminated\n");
         throw;
     }
 }

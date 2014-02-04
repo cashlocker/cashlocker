@@ -100,7 +100,7 @@ static void InitMessage(const std::string &message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("securecoin-core", psz).toStdString();
+    return QCoreApplication::translate("cashlocker-core", psz).toStdString();
 }
 
 /* Handle runaway exceptions. Shows a message box with the problem and quits the program.
@@ -108,7 +108,7 @@ static std::string Translate(const char* psz)
 static void handleRunawayException(std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
-    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Securecoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
+    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Cashlocker can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
     exit(1);
 }
 
@@ -137,12 +137,12 @@ int main(int argc, char *argv[])
     // Install global event filter that makes sure that long tooltips can be word-wrapped
     app.installEventFilter(new GUIUtil::ToolTipToRichTextFilter(TOOLTIP_WRAP_THRESHOLD, &app));
 
-    // ... then securecoin.conf:
+    // ... then cashlocker.conf:
     if (!boost::filesystem::is_directory(GetDataDir(false)))
     {
         // This message can not be translated, as translation is not initialized yet
-        // (which not yet possible because lang=XX can be overridden in securecoin.conf in the data directory)
-        QMessageBox::critical(0, "Securecoin",
+        // (which not yet possible because lang=XX can be overridden in cashlocker.conf in the data directory)
+        QMessageBox::critical(0, "Cashlocker",
                               QString("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
         return 1;
     }
@@ -150,12 +150,12 @@ int main(int argc, char *argv[])
 
     // Application identification (must be set before OptionsModel is initialized,
     // as it is used to locate QSettings)
-    QApplication::setOrganizationName("Securecoin");
-    QApplication::setOrganizationDomain("securecoin.org");
+    QApplication::setOrganizationName("Cashlocker");
+    QApplication::setOrganizationDomain("cashlocker.co");
     if(GetBoolArg("-testnet")) // Separate UI settings for testnet
-        QApplication::setApplicationName("Securecoin-Qt-testnet");
+        QApplication::setApplicationName("CashLocker-Qt-testnet");
     else
-        QApplication::setApplicationName("Securecoin-Qt");
+        QApplication::setApplicationName("CashLocker-Qt");
 
     // ... then GUI settings:
     OptionsModel optionsModel;
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
                 }
 
                 // Now that initialization/startup is done, process any command-line
-                // securecoin: URIs
+                // cashlocker: URIs
                 QObject::connect(paymentServer, SIGNAL(receivedURI(QString)), &window, SLOT(handleURI(QString)));
                 QTimer::singleShot(100, paymentServer, SLOT(uiReady()));
 
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
                 window.removeAllWallets();
                 guiref = 0;
             }
-            // Shutdown the core and its threads, but don't exit Securecoin-Qt here
+            // Shutdown the core and its threads, but don't exit CashLocker-Qt here
             threadGroup.interrupt_all();
             threadGroup.join_all();
             Shutdown();

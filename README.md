@@ -1,7 +1,7 @@
-Securecoin 1.0
+CashLocker 1.0
 ====================
 
-Copyright (c) 2009-2013 Bitcoin Developers 2013-2014 SecureCoin Developers
+Copyright (c) 2009-2013 Bitcoin Developers 2014-2015 CashLocker Developers
 
 Distributed under the MIT/X11 software license, see the accompanying
 file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -12,7 +12,7 @@ sphlib 3.0 by Thomas Pornin.
 
 Intro
 ---------------------
-Securecoin is a free open source peer-to-peer electronic cash system that is
+CashLocker is a free open source peer-to-peer electronic cash system that is
 completely decentralized, without the need for a central server or trusted
 parties.  Users hold the crypto keys to their own money and transact directly
 with each other, with the help of a P2P network to check for double-spending. It is secured by six different algorithms and its CPU only mining is another security strength. 

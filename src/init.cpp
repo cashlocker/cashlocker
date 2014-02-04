@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Copyright (c) 2013 Securecoin developers
+// Copyright (c) 2014 Cash Locker developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -165,7 +165,7 @@ bool AppInit(int argc, char* argv[])
         //
         // Parameters
         //
-        // If Qt is used, parameters/securecoin.conf are parsed in qt/bitcoin.cpp's main()
+        // If Qt is used, parameters/cashlocker.conf are parsed in qt/bitcoin.cpp's main()
         ParseParameters(argc, argv);
         if (!boost::filesystem::is_directory(GetDataDir(false)))
         {
@@ -176,13 +176,13 @@ bool AppInit(int argc, char* argv[])
 
         if (mapArgs.count("-?") || mapArgs.count("--help"))
         {
-            // First part of help message is specific to securecoind / RPC client
-            std::string strUsage = _("Securecoin version") + " " + FormatFullVersion() + "\n\n" +
+            // First part of help message is specific to cashlockerd / RPC client
+            std::string strUsage = _("Cashlocker version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
-                  "  securecoind [options]                     " + "\n" +
-                  "  securecoind [options] <command> [params]  " + _("Send command to -server or securecoind") + "\n" +
-                  "  securecoind [options] help                " + _("List commands") + "\n" +
-                  "  securecoind [options] help <command>      " + _("Get help for a command") + "\n";
+                  "  cashlockerd [options]                     " + "\n" +
+                  "  cashlockerd [options] <command> [params]  " + _("Send command to -server or cashlockerd") + "\n" +
+                  "  cashlockerd [options] help                " + _("List commands") + "\n" +
+                  "  cashlockerd [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessage();
 
@@ -192,7 +192,7 @@ bool AppInit(int argc, char* argv[])
 
         // Command-line RPC
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "securecoin:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "cashlocker:"))
                 fCommandLine = true;
 
         if (fCommandLine)
@@ -254,7 +254,7 @@ int main(int argc, char* argv[])
 {
     bool fRet = false;
 
-    // Connect securecoind signal handlers
+    // Connect cashlockerd signal handlers
     noui_connect();
 
     fRet = AppInit(argc, argv);
@@ -295,8 +295,8 @@ std::string HelpMessage()
 {
     string strUsage = _("Options:") + "\n" +
         "  -?                     " + _("This help message") + "\n" +
-        "  -conf=<file>           " + _("Specify configuration file (default: securecoin.conf)") + "\n" +
-        "  -pid=<file>            " + _("Specify pid file (default: securecoind.pid)") + "\n" +
+        "  -conf=<file>           " + _("Specify configuration file (default: cashlocker.conf)") + "\n" +
+        "  -pid=<file>            " + _("Specify pid file (default: cashlockerd.pid)") + "\n" +
         "  -gen                   " + _("Generate coins (default: 0)") + "\n" +
         "  -datadir=<dir>         " + _("Specify data directory") + "\n" +
         "  -dbcache=<n>           " + _("Set database cache size in megabytes (default: 25)") + "\n" +
@@ -371,7 +371,7 @@ std::string HelpMessage()
         "  -blockmaxsize=<n>      "   + _("Set maximum block size in bytes (default: 250000)") + "\n" +
         "  -blockprioritysize=<n> "   + _("Set maximum size of high-priority/low-fee transactions in bytes (default: 27000)") + "\n" +
 
-        "\n" + _("SSL options: (see the Securecoin Wiki for SSL setup instructions)") + "\n" +
+        "\n" + _("SSL options: (see the Cash Locker Wiki for SSL setup instructions)") + "\n" +
         "  -rpcssl                                  " + _("Use OpenSSL (https) for JSON-RPC connections") + "\n" +
         "  -rpcsslcertificatechainfile=<file.cert>  " + _("Server certificate file (default: server.cert)") + "\n" +
         "  -rpcsslprivatekeyfile=<file.pem>         " + _("Server private key (default: server.pem)") + "\n" +
@@ -624,18 +624,18 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     std::string strDataDir = GetDataDir().string();
 
-    // Make sure only a single Securecoin process is using the data directory.
+    // Make sure only a single CashLocker process is using the data directory.
     boost::filesystem::path pathLockFile = GetDataDir() / ".lock";
     FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
     static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
     if (!lock.try_lock())
-        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Securecoin is probably already running."), strDataDir.c_str()));
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Cash Locker is probably already running."), strDataDir.c_str()));
 
     if (GetBoolArg("-shrinkdebugfile", !fDebug))
         ShrinkDebugFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    printf("Securecoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
+    printf("Cash Locker version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     if (!fLogTimestamps)
         printf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()).c_str());
@@ -645,7 +645,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     std::ostringstream strErrors;
 
     if (fDaemon)
-        fprintf(stdout, "Securecoin server starting\n");
+        fprintf(stdout, "Cash Locker server starting\n");
 
     if (nScriptCheckThreads) {
         printf("Using %u threads for script verification\n", nScriptCheckThreads);
@@ -967,10 +967,10 @@ bool AppInit2(boost::thread_group& threadGroup)
             InitWarning(msg);
         }
         else if (nLoadWalletRet == DB_TOO_NEW)
-            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Securecoin") << "\n";
+            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Cash Locker") << "\n";
         else if (nLoadWalletRet == DB_NEED_REWRITE)
         {
-            strErrors << _("Wallet needed to be rewritten: restart Securecoin to complete") << "\n";
+            strErrors << _("Wallet needed to be rewritten: restart Cash Locker to complete") << "\n";
             printf("%s", strErrors.str().c_str());
             return InitError(strErrors.str());
         }

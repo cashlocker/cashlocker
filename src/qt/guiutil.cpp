@@ -80,7 +80,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin URI
-    if(!uri.isValid() || uri.scheme() != QString("securecoin"))
+    if(!uri.isValid() || uri.scheme() != QString("cashlocker"))
         return false;
 
     SendCoinsRecipient rv;
@@ -125,13 +125,13 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 
 bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
 {
-    // Convert securecoin:// to securecoin:
+    // Convert cashlocker:// to cashlocker:
     //
-    //    Cannot handle this later, because securecoin:// will cause Qt to see the part after // as host,
+    //    Cannot handle this later, because cashlocker:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("securecoin://"))
+    if(uri.startsWith("cashlocker://"))
     {
-        uri.replace(0, 10, "securecoin:");
+        uri.replace(0, 10, "cashlocker:");
     }
     QUrl uriInstance(uri);
     return parseBitcoinURI(uriInstance, out);
@@ -277,12 +277,12 @@ bool ToolTipToRichTextFilter::eventFilter(QObject *obj, QEvent *evt)
 #ifdef WIN32
 boost::filesystem::path static StartupShortcutPath()
 {
-    return GetSpecialFolderPath(CSIDL_STARTUP) / "Securecoin.lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / "Cashlocker.lnk";
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for Securecoin.lnk
+    // check for Cashlocker.lnk
     return boost::filesystem::exists(StartupShortcutPath());
 }
 
@@ -359,7 +359,7 @@ boost::filesystem::path static GetAutostartDir()
 
 boost::filesystem::path static GetAutostartFilePath()
 {
-    return GetAutostartDir() / "securecoin.desktop";
+    return GetAutostartDir() / "cashlocker.desktop";
 }
 
 bool GetStartOnSystemStartup()
@@ -397,10 +397,10 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         boost::filesystem::ofstream optionFile(GetAutostartFilePath(), std::ios_base::out|std::ios_base::trunc);
         if (!optionFile.good())
             return false;
-        // Write a securecoin.desktop file to the autostart directory:
+        // Write a cashlocker.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        optionFile << "Name=Securecoin\n";
+        optionFile << "Name=Cashlocker\n";
         optionFile << "Exec=" << pszExePath << " -min\n";
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -421,10 +421,10 @@ bool SetStartOnSystemStartup(bool fAutoStart) { return false; }
 HelpMessageBox::HelpMessageBox(QWidget *parent) :
     QMessageBox(parent)
 {
-    header = tr("Securecoin-Qt") + " " + tr("version") + " " +
+    header = tr("Cashlocker-Qt") + " " + tr("version") + " " +
         QString::fromStdString(FormatFullVersion()) + "\n\n" +
         tr("Usage:") + "\n" +
-        "  securecoin-qt [" + tr("command-line options") + "]                     " + "\n";
+        "  cashlocker-qt [" + tr("command-line options") + "]                     " + "\n";
 
     coreOptions = QString::fromStdString(HelpMessage());
 
@@ -433,7 +433,7 @@ HelpMessageBox::HelpMessageBox(QWidget *parent) :
         "  -min                   " + tr("Start minimized") + "\n" +
         "  -splash                " + tr("Show splash screen on startup (default: 1)") + "\n";
 
-    setWindowTitle(tr("Securecoin-Qt"));
+    setWindowTitle(tr("Cashlocker-Qt"));
     setTextFormat(Qt::PlainText);
     // setMinimumWidth is ignored for QMessageBox so put in non-breaking spaces to make it wider.
     setText(header + QString(QChar(0x2003)).repeated(50));

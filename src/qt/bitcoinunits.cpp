@@ -34,9 +34,9 @@ QString BitcoinUnits::name(int unit)
 {
     switch(unit)
     {
-    case SRC: return QString("SRC");
-    case cSRC: return QString("cSRC");
-    case mSRC: return QString("mSRC");
+    case SRC: return QString("CLK");
+    case cSRC: return QString("cCLK");
+    case mSRC: return QString("mCLK");
     default: return QString("???");
     }
 }
@@ -45,9 +45,9 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case SRC: return QString("Securecoins");
-    case cSRC: return QString("Centum-Securecoins (1 / 100)");
-    case mSRC: return QString("Milli-Securecoins (1 / 1,000)");
+    case SRC: return QString("CashLocker Coins");
+    case cSRC: return QString("Centum-CashLocker Coins (1 / 100)");
+    case mSRC: return QString("Milli-CashLocker Coins (1 / 1,000)");
     default: return QString("???");
     }
 }

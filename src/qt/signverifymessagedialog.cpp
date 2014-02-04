@@ -24,11 +24,11 @@ SignVerifyMessageDialog::SignVerifyMessageDialog(QWidget *parent) :
 
 #if (QT_VERSION >= 0x040700)
     /* Do not move this to the XML file, Qt before 4.7 will choke on it */
-    ui->addressIn_SM->setPlaceholderText(tr("Enter a Securecoin address (e.g. si1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)"));
+    ui->addressIn_SM->setPlaceholderText(tr("Enter a Cash Locker address (e.g. si1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)"));
     ui->signatureOut_SM->setPlaceholderText(tr("Click \"Sign Message\" to generate signature"));
 
-    ui->addressIn_VM->setPlaceholderText(tr("Enter a Securecoin address (e.g. si1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)"));
-    ui->signatureIn_VM->setPlaceholderText(tr("Enter Securecoin signature"));
+    ui->addressIn_VM->setPlaceholderText(tr("Enter a Cash Locker address (e.g. si1NooNjQySQLDJ643HWfZZ7UN2EmLEvix)"));
+    ui->signatureIn_VM->setPlaceholderText(tr("Enter Cash Locker signature"));
 #endif
 
     GUIUtil::setupAddressWidget(ui->addressIn_SM, this);
